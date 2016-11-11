@@ -1,0 +1,65 @@
+---
+title: "Developing Data Products Week 2 Peer-graded Assignment: R Markdown and Leaflet"
+author: "Ken Wade"
+date: November 9, 2016
+always_allow_html: yes
+---
+<!--
+## Introduction for Peer-graded Assignment: R Markdown and Leaflet
+
+* Create a web page using R Markdown that features a map created with Leaflet.
+
+* Host your webpage on either GitHub Pages, RPubs, or NeoCities.
+
+#####Your webpage must contain the date that you created the document, and it must contain a map created with Leaflet. We would love to see you show off your creativity!
+
+##Review criteria
+
+###The rubric contains the following two questions:
+
+* Does the web page feature a date and is this date less than two months before the date that you're grading this assignment?
+
+* Does the web page feature an interactive map that appears to have been created with Leaflet?
+
+## Installation
+-->
+
+##YouTube Link to [Maps of Chiang Mai's 10 Best Road Bike Rides](https://youtu.be/zxF3jxCiJpY)
+##YouTube Link to [Photos of Chiang Mai's 10 Best Road Bike Rides](https://youtu.be/89hf53o201s)
+```{r, echo=FALSE, message=FALSE, warning=FALSE}
+library(leaflet)
+library(readxl)
+
+## Setup Paths and Filenames
+
+XLS_filename = "C:/Users/Ken/Documents/Ken/Continuing Education/Johns Hopkins School of Public Health - Data Science 9 - Developing Data Products/CourseWork/Week 2/RoadBikeDestinations.xlsx"
+icon_Filename = "C:/Users/Ken/Documents/Ken/Continuing Education/Johns Hopkins School of Public Health - Data Science 9 - Developing Data Products/CourseWork/Week 2/icon_small.png"
+  
+## Read XLS file and fix (by that I mean remove) the last row that is read in from the xls file
+
+df = read_excel(XLS_filename, sheet=1, col_names = TRUE, col_types = c("text", "numeric", "numeric", "text"))
+df=df[-nrow(df), ]
+
+## Next improvement will be to remove all NA Latitude & Longitude rows from the data frame
+
+## Making Custom Markers
+
+bikeIcon <- makeIcon(
+  iconUrl = icon_Filename,
+  iconWidth = 31*215/230, iconHeight = 31,
+  iconAnchorX = 31*215/230/2, iconAnchorY = 16)
+
+## Get Custom Sites
+
+bikeSites = paste("Photo Link: ", "<b><a href='", df$`Site URL`, "'>", df$`Location Name`, "</a></b>", sep = "")
+
+## Make Map
+
+df[1:24,c("Latitude", "Longitude")] %>% 
+  leaflet() %>%
+  addTiles() %>%
+  addMarkers(icon = bikeIcon, popup = bikeSites)
+```
+
+####Map of road bike ride photo tweets around Chiang Mai, Thailand.
+
