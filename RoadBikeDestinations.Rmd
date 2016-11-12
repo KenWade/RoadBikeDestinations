@@ -38,9 +38,10 @@ icon_Filename = "C:/Users/Ken/Documents/Ken/Continuing Education/Johns Hopkins S
 ## Read XLS file and fix (by that I mean remove) the last row that is read in from the xls file
 
 df = read_excel(XLS_filename, sheet=1, col_names = TRUE, col_types = c("text", "numeric", "numeric", "text"))
-df=df[-nrow(df), ]
 
-## Next improvement will be to remove all NA Latitude & Longitude rows from the data frame
+## Remove all NA Latitude & Longitude rows from the data frame, actually, remove all rows with any NA
+
+df = na.omit(df)
 
 ## Making Custom Markers
 
